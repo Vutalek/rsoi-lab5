@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  ingressClassName: traefik
+  tls:
+    # Без secretName Traefik использует свой сертификат по умолчанию.
+    # Для собственного сертификата укажите здесь secretName TLS Secret.
+    - hosts:
+        - keycloak.37.44.196.161.nip.io
+  rules:
+    - host: keycloak.37.44.196.161.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8080
