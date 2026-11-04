@@ -17,7 +17,7 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Получить токен\", () => {",
-									"    pm.response.to.have.status(200)",
+									"    pm.expect(pm.response.code, pm.response.text()).to.equal(200)",
 									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contains(\"application/json\");",
 									"",
 									"    const response = pm.response.json();",
