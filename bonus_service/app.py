@@ -2,7 +2,7 @@ from uuid import UUID, uuid4
 from datetime import datetime
 from typing import Annotated
 
-from fastapi import FastAPI, Query, HTTPException, Response, status
+from fastapi import FastAPI, Depends, Query, HTTPException, Response, status
 
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
@@ -11,7 +11,9 @@ from utils import construct_engine
 from orm import PrivilegeORM, PrivilegeHistoryORM
 from models import PrivilegePost, PrivilegePatch, HistoryPost
 
-app = FastAPI()
+from auth import authenticate
+
+app = FastAPI(dependencies=[Depends(authenticate)])
 
 engine = construct_engine()
 

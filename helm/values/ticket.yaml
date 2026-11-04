@@ -1,4 +1,7 @@
 fullnameOverride: ticket
+envFrom:
+  - configMapRef:
+      name: oidc-config
 image:
   repository: vutalek/rsoi-ticket_service
 service:

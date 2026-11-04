@@ -3,6 +3,10 @@ services:
     build:
       context: gateway_service
     environment: &gateway-environment
+      <<: &oidc-environment
+        OIDC_ISSUER: ${OIDC_ISSUER}
+        OIDC_JWKS: ${OIDC_JWKS}
+        OIDC_AUDIENCE: ${OIDC_AUDIENCE:-rsoi-api}
       FLIGHT_SERVICE_HOST: ${FLIGHT_SERVICE_HOST}
       TICKET_SERVICE_HOST: ${TICKET_SERVICE_HOST}
       BONUS_SERVICE_HOST: ${BONUS_SERVICE_HOST}
@@ -33,6 +37,7 @@ services:
     build:
       context: flight_service
     environment:
+      <<: *oidc-environment
       FLIGHT_SERVICE_DB_PROTOCOL: ${FLIGHT_SERVICE_DB_PROTOCOL}
       FLIGHT_SERVICE_DB_USER: ${FLIGHT_SERVICE_DB_USER}
       FLIGHT_SERVICE_DB_PASSWORD: ${FLIGHT_SERVICE_DB_PASSWORD}
@@ -49,6 +54,7 @@ services:
     build:
       context: ticket_service
     environment:
+      <<: *oidc-environment
       TICKET_SERVICE_DB_PROTOCOL: ${TICKET_SERVICE_DB_PROTOCOL}
       TICKET_SERVICE_DB_USER: ${TICKET_SERVICE_DB_USER}
       TICKET_SERVICE_DB_PASSWORD: ${TICKET_SERVICE_DB_PASSWORD}
@@ -67,6 +73,7 @@ services:
     build:
       context: bonus_service
     environment:
+      <<: *oidc-environment
       BONUS_SERVICE_DB_PROTOCOL: ${BONUS_SERVICE_DB_PROTOCOL}
       BONUS_SERVICE_DB_USER: ${BONUS_SERVICE_DB_USER}
       BONUS_SERVICE_DB_PASSWORD: ${BONUS_SERVICE_DB_PASSWORD}

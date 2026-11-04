@@ -1,7 +1,7 @@
 import os
 from typing import Annotated
 
-from fastapi import FastAPI, Query, HTTPException, Response, status
+from fastapi import FastAPI, Depends, Query, HTTPException, Response, status
 
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
@@ -10,7 +10,9 @@ from utils import construct_engine
 from orm import FlightORM, AirportORM
 from models import FlightPost, FlightPatch, AirportPost, AirportPatch
 
-app = FastAPI()
+from auth import authenticate
+
+app = FastAPI(dependencies=[Depends(authenticate)])
 
 engine = construct_engine()
 

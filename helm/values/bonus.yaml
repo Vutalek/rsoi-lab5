@@ -1,4 +1,7 @@
 fullnameOverride: bonus
+envFrom:
+  - configMapRef:
+      name: oidc-config
 image:
   repository: vutalek/rsoi-bonus_service
 service:

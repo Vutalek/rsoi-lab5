@@ -1,4 +1,7 @@
 fullnameOverride: flight
+envFrom:
+  - configMapRef:
+      name: oidc-config
 image:
   repository: vutalek/rsoi-flight_service
 service:

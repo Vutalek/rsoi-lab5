@@ -1,4 +1,7 @@
 fullnameOverride: gateway
+envFrom:
+  - configMapRef:
+      name: oidc-config
 image:
   repository: vutalek/rsoi-gateway_service
 service:

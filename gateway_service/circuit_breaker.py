@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Literal
+from fastapi import HTTPException
 
 CBState = Literal["CLOSED", "OPEN", "HALF_OPEN"]
 
@@ -40,6 +41,8 @@ class CircuitBreaker:
             if self.state == "CLOSED":
                 try:
                     result = func(*args, **kwargs)
+                except HTTPException:
+                    raise
                 except Exception as e:
                     self.fault_count += 1
                     if self.fault_count == self.max_count:
@@ -50,6 +53,8 @@ class CircuitBreaker:
             if self.state == "HALF_OPEN":
                 try:
                     result = func(*args, **kwargs)
+                except HTTPException:
+                    raise
                 except Exception as e:
                     self.state = "OPEN"
                     self.opened_at = datetime.now()

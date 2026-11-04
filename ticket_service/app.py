@@ -1,6 +1,6 @@
 from uuid import UUID, uuid4
 
-from fastapi import FastAPI, HTTPException, Response, status
+from fastapi import FastAPI, Depends, HTTPException, Response, status
 
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
@@ -9,7 +9,9 @@ from utils import construct_engine
 from orm import TicketORM
 from models import TicketPost
 
-app = FastAPI()
+from auth import authenticate
+
+app = FastAPI(dependencies=[Depends(authenticate)])
 
 engine = construct_engine()
 
