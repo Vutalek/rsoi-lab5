@@ -9,7 +9,7 @@
 		},
 		{
 			"key": "identityProviderUrl",
-			"value": "",
+			"value": "https://keycloak.37.44.196.161.nip.io/realms/rsoi",
 			"enabled": true
 		},
 		{
@@ -24,7 +24,7 @@
 		},
 		{
 			"key": "clientId",
-			"value": "",
+			"value": "rsoi-client",
 			"enabled": true
 		},
 		{

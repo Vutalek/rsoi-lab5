@@ -151,6 +151,13 @@ jobs:
           # TODO insert your variant
           collection: postman/collection.json
           environment: postman/environment.json
+          insecure: true
+          envVar: |
+            [
+              {"key": "username", "value": ${{ toJSON(secrets.KEYCLOAK_USERNAME) }}},
+              {"key": "password", "value": ${{ toJSON(secrets.KEYCLOAK_PASSWORD) }}},
+              {"key": "clientSecret", "value": ${{ toJSON(secrets.KEYCLOAK_CLIENT_SECRET) }}}
+            ]
           delayRequest: 100
           reporters: '[ "cli" ]'
 
