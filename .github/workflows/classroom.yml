@@ -206,6 +206,10 @@ jobs:
         run: npm install --global newman
 
       - name: Run fault tolerance tests
+        env:
+          KEYCLOAK_USERNAME: ${{ secrets.KEYCLOAK_USERNAME }}
+          KEYCLOAK_PASSWORD: ${{ secrets.KEYCLOAK_PASSWORD }}
+          KEYCLOAK_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}
         shell: bash
         run: |
           sed -i 's|http://localhost:8080|http://37.44.196.161|g' v1/postman/environment.json
@@ -220,8 +224,15 @@ jobs:
           trap cleanup EXIT
 
           run_tests() {
+            token=$(curl -kfsS https://keycloak.37.44.196.161.nip.io/realms/rsoi/protocol/openid-connect/token \
+              --data-urlencode grant_type=password --data-urlencode client_id=rsoi-client \
+              --data-urlencode "username=$KEYCLOAK_USERNAME" \
+              --data-urlencode "password=$KEYCLOAK_PASSWORD" \
+              --data-urlencode "client_secret=$KEYCLOAK_CLIENT_SECRET" \
+              --data-urlencode 'scope=openid profile email' | jq -er '.access_token')
             newman run v1/postman/collection.json --folder "$1" \
               --environment v1/postman/environment.json \
+              --env-var "authorizationToken=$token" \
               --export-environment v1/postman/environment.json --delay-request 100
           }
 
