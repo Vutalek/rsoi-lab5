@@ -57,6 +57,7 @@ def database():
 
 
 @pytest.fixture
-def client():
+def client(monkeypatch):
+    monkeypatch.setitem(app.app.dependency_overrides, app.authenticate, lambda: "vuta")
     with TestClient(app.app) as test_client:
         yield test_client
